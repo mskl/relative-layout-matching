@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script src="/static/vendor/d3/d3.min.js"></script>
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
+    <title>Invoice Embedding Browser</title>
+
+    <script>
+        var docid1 = {{ docid1|tojson }};
+        var docid2 = {{ docid2|tojson }};
+        var page1 = {{ page1|tojson }};
+        var page2 = {{ page2|tojson }};
+    </script>
+</head>
+
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-secondary static-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">Interactive Layout Clustering</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Content -->
+<div class="container-fluid">
+    <div class="row bg-light">
+        <div class="pl-4 p-2" id="main-toolbar">{{ experiment_name }} | Annotated {{ n_docs_annotated }} pairs.</div>
+    </div>
+    <div class="row">
+        <div class="col-md" id="col1">
+            <img class="page_img" id="left" alt="#" src=""/>
+        </div>
+        <div class="col-md" id="col2">
+            <img class="page_img" id="right" alt="#" src="#"/>
+        </div>
+        <div class="col-sm" id="col3">
+            <form method="POST" class="text-center p-2">
+                <div class="btn-group">
+                    <button type="submit" name="same" value="true" id="same" class="btn btn-primary">same</button>
+                    <button type="submit" name="interesting" value="true" id="interesting" class="btn btn-primary">interesting</button>
+                    <button type="submit" name="different" value="true" id="different" class="btn btn-primary">different</button>
+                    <button type="submit" name="reject" value="true" id="reject" class="btn btn-primary">reject</button>
+                </div>
+                <div class="btn-group">
+                    <button type="submit" name="next" value="true" id="next" class="btn btn-primary">next</button>
+                </div>
+            </form>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">document id</th>
+                        <th scope="col">page</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="info-left">
+                        <td class="document-id">{{ docid1 }}</td>
+                        <td class="document-page">{{ page1 }}</td>
+                    </tr>
+                    <tr class="info-right">
+                        <td class="document-id">{{ docid2 }}</td>
+                        <td class="document-page">{{ page2 }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table">
+                <tr class="info-left">
+                    <td>Relationship</td>
+                    <td>{{ relationship }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- D3JS visualization -->
+<script src="/static/visualization.js"></script>
+
+<!-- Import core JavaScript -->
+<script src="/static/vendor/jquery/jquery.slim.min.js"></script>
+<script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

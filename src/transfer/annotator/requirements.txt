@@ -1,0 +1,11 @@
+sklearn
+numpy
+tensorflow==2.4.0
+pandas
+Flask==1.1.2
+gunicorn==20.0.4
+Pillow==7.2.0
+pytest==6.0.1
+tqdm
+scikit-image
+seaborn

@@ -1,0 +1,16 @@
+version: '2.4'
+services:
+  jupyter:
+    extends:
+      file: docker-compose.train.yml
+      service: jupyter
+    env_file:
+      - .env
+    build:
+      args:
+        GPU_RUNTIME: nvidia
+    runtime: nvidia
+  tensorboard:
+    extends:
+      file: docker-compose.train.yml
+      service: tensorboard

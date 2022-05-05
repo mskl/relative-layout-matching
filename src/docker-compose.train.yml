@@ -1,0 +1,30 @@
+version: '2.4'
+services:
+  jupyter:
+    image: skalimat.thesis
+    build:
+      context: .
+      dockerfile: Dockerfile.train
+    ports:
+      - "${JUPYTER_PORT}:${JUPYTER_PORT}"
+    command: jupyter notebook --ip=0.0.0.0 --port=${JUPYTER_PORT} --allow-root --NotebookApp.password='sha1:8415d68c05e6:a6376f84f5d0dc4d343cf7f76fcedcc47aa0e158'
+    volumes:
+      - "${PROJECT_FOLDER}:/app:delegated"
+      - "./models:/models:delegated"
+      - "./data:/data:delegated"
+      - "./logs:/logs:delegated"
+    mem_limit: "60gb"
+    environment:
+      NVIDIA_VISIBLE_DEVICES: 1
+    env_file:
+      - .env
+  tensorboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.train
+    ports:
+      - "${TENSORBOARD_PORT}:${TENSORBOARD_PORT}"
+    command: tensorboard --logdir=/logs --port=${TENSORBOARD_PORT} --bind_all --reload_multifile=true
+    volumes:
+      - "./logs:/logs"
+    restart: always

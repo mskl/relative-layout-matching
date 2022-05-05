@@ -1,0 +1,15 @@
+version: '3'
+services:
+  annotator-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.annotator
+    ports:
+      - 5005:5005
+    volumes:
+      - "./transfer/:/app:delegated"
+      - "./data:/data:delegated"
+      - "./data:/app/annotator/static/data/:delegated"
+    restart: always
+    environment:
+      - FLASK_ENV=development
