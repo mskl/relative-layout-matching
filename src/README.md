@@ -10,6 +10,7 @@ docker-compose -f docker-compose.annotator.yml up --build
 Once running, the annotation tool will be available at http://localhost:5005
 
 ## Training
+### Interactive
 The repository contains a docker-compose that runs both Jupyter Notebook environment for interactive development along with a TensorBoard service for experiment logging. Use the provided `Makefile` to easily interact with the interactive dev. environment:
 
 ```bash
@@ -25,8 +26,17 @@ make bash
 # obtain the logs from the jupyter notebook container
 make logs
 ```
+### Headless
+Generally there are two options to run a training. Either use the interactive environment docker-compose and start the training within already-running docker instance, or run a separate docker instance. To run the training on example data separately, use:
+```bash
+# build the training docker-compose without GPU support
+docker-compose -f docker-compose.train.yml build
 
-Individual trainings can be started from within the interactive dev environment mentioned above, or rather from standalone docker container instances. To run an empty docker-compose forever blocking the GPU3 run:
+# run the training, use docker-compose -d to run on background
+docker-compose -f docker-compose.train.yml run --build jupyter python3 train.py --consistency 1 --triplet 1 --reconstruction 1 --optimizer adam --backbone resnet_unet_50 --batch-size 2 --epochs 70 --embdim 256 --dataset elections
+```
+
+Alternative approach allows scheduling using task-spooler is described below. It allows to create a separate docker instance for each GPU and schedule the trainings using task-spooler.
 ```bash
 # start a training docker-compose with GPU3
 docker-compose -f docker-compose.train.gpu.yml run -d -e NVIDIA_VISIBLE_DEVICES=3 --name "GPU3" jupyter sleep infinity
@@ -42,9 +52,4 @@ tsp
 
 # to tail the logs from the last training, run
 tsp -t
-```
-
-Alternatively, a separate docker-compose can be created for each experiment:
-```bash
-docker-compose -f docker-compose.train.gpu.yml run -d -e NVIDIA_VISIBLE_DEVICES=3 jupyter python3 train.py --consistency 1 --triplet 1 --reconstruction 1 --optimizer adam --backbone resnet_unet_50 --batch-size 2 --epochs 70 --embdim 256 --dataset elections
 ```
